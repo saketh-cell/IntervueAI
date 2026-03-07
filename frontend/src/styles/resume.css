@@ -1,0 +1,222 @@
+/* Resume-specific extras that match your dashboard style system */
+
+.resumeUploadRow {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.resumeFileInput {
+  width: 100%;
+  max-width: 520px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.resumeHelper {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.resumeSelected {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px dashed #d1d5db;
+  background: #ffffff;
+}
+
+.resumeSelectedTitle {
+  font-weight: 900;
+  color: #111827;
+}
+
+.resumeSelectedMeta {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.resumePills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.resumePillOverall {
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 900;
+  background: rgba(79, 70, 229, 0.12);
+  border: 1px solid rgba(79, 70, 229, 0.22);
+  color: #4338ca;
+}
+
+.resumePillATS {
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 900;
+  background: rgba(124, 58, 237, 0.12);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  color: #6d28d9;
+}
+
+.resumeRightBtns {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.resumeBtnDanger {
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-weight: 900;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.12);
+  color: #991b1b;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.resumeBtnDanger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(239, 68, 68, 0.12);
+  background: rgba(239, 68, 68, 0.16);
+}
+
+/* ===== ATS Progress Bar ===== */
+.atsBarWrap {
+  margin-top: 12px;
+}
+
+.atsBarTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.atsLabel {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 800;
+}
+
+.atsValue {
+  font-size: 12px;
+  font-weight: 900;
+  color: #111827;
+}
+
+.atsTrack {
+  margin-top: 10px;
+  height: 12px;
+  border-radius: 999px;
+  background: #eef2ff;
+  border: 1px solid rgba(79, 70, 229, 0.18);
+  overflow: hidden;
+}
+
+.atsFill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #4f46e5, #7c3aed);
+  transition: width 0.35s ease;
+}
+
+/* ===== Collapsible Breakdown ===== */
+.collapseBtn {
+  width: fit-content;
+  margin-top: 14px;
+  font-size: 12px;
+  font-weight: 900;
+  border-radius: 14px;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.collapseBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.06);
+}
+
+.breakdownGrid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+
+.breakdownCard {
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  padding: 14px;
+}
+
+.breakdownTitle {
+  font-size: 11px;
+  font-weight: 900;
+  color: #6b7280;
+  letter-spacing: 0.2px;
+}
+
+.breakdownScore {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: 900;
+  color: #111827;
+}
+
+.breakdownMini {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #6b7280;
+  line-height: 1.55;
+}
+
+/* responsive breakdown */
+@media (max-width: 1200px) {
+  .breakdownGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 520px) {
+  .breakdownGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Gemini Analysis Lists ===== */
+.analysisList {
+  margin: 0;
+  padding-left: 18px;
+  color: #111827;
+}
+
+.analysisList li {
+  margin: 10px 0;
+  line-height: 1.6;
+  color: #111827;
+}
+
+.analysisHint {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.6;
+}

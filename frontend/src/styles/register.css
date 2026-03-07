@@ -1,0 +1,195 @@
+/* ===== Global Reset ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== Main Wrapper ===== */
+.register-wrapper {
+  display: flex;
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ===== Left Branding Section ===== */
+.register-left {
+  flex: 1;
+  background: linear-gradient(135deg, #0ea5e9, #2563eb);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.register-left::before {
+  content: "";
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  bottom: -150px;
+  left: -150px;
+}
+
+.brand-content {
+  max-width: 420px;
+  z-index: 2;
+}
+
+.brand-title {
+  font-size: 38px;
+  font-weight: bold;
+  margin-bottom: 18px;
+}
+
+.brand-text {
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+/* ===== Right Form Section ===== */
+.register-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background-color: #f3f4f6;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 35px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* ===== Headings ===== */
+.register-heading {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #111827;
+}
+
+.register-subheading {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 25px;
+}
+
+/* ===== Inputs ===== */
+.input-group {
+  margin-bottom: 18px;
+}
+
+.input-label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+  color: #374151;
+  font-weight: 500;
+}
+
+.register-input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.register-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* ===== Button ===== */
+.register-button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #0ea5e9, #2563eb);
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.register-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+}
+
+/* ===== Footer ===== */
+.register-footer {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #6b7280;
+  text-align: center;
+}
+
+.register-footer span {
+  color: #2563eb;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.register-footer span:hover {
+  text-decoration: underline;
+}
+
+/* ===== Error ===== */
+.error-message {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 15px;
+}
+
+/* ===== Animation ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .register-wrapper {
+    flex-direction: column;
+  }
+
+  .register-left {
+    padding: 60px 20px;
+    text-align: center;
+  }
+
+  .register-right {
+    padding: 40px 20px;
+  }
+
+  .register-card {
+    padding: 25px;
+  }
+}
