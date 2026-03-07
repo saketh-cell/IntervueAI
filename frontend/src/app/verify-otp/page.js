@@ -1,19 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { verifyResetOtp, sendResetOtp } from "@/src/services/password.service";
 import "@/src/styles/login.css";
 
-export default function VerifyOtpPage() {
+function VerifyOtpForm() {
   const router = useRouter();
   const params = useSearchParams();
 
-  // ✅ derive directly from URL, no state needed
   const email = params.get("email") || "";
 
   const [otp, setOtp] = useState("");
-  const [status, setStatus] = useState({ loading: false, msg: "", error: "" });
+  const [status, setStatus] = useState({
+    loading: false,
+    msg: "",
+    error: "",
+  });
 
   const handleVerify = async (e) => {
     e.preventDefault();
@@ -21,6 +24,7 @@ export default function VerifyOtpPage() {
 
     try {
       const res = await verifyResetOtp(email, otp);
+
       setStatus({
         loading: false,
         msg: res.message || "OTP verified",
@@ -42,6 +46,7 @@ export default function VerifyOtpPage() {
 
     try {
       const res = await sendResetOtp(email);
+
       setStatus({
         loading: false,
         msg: res.message || "OTP resent",
@@ -107,5 +112,13 @@ export default function VerifyOtpPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function VerifyOtpPage() {
+  return (
+    <Suspense fallback={<div className="login-wrapper">Loading...</div>}>
+      <VerifyOtpForm />
+    </Suspense>
   );
 }
