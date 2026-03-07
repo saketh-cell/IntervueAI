@@ -14,19 +14,27 @@ const passwordRoutes = require("./routes/password.route");
 
 const app = express();
 
-app.use(cors({
-  origin: process.env.CLIENT_URL,
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
 // Connect DB
 connectDB();
 
-
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+app.get("/", (req, res) => {
+  res.json({ success: true, message: "IntervueAI backend is running" });
+});
+
+app.get("/ping", (req, res) => {
+  res.json({ ok: true });
+});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/password", passwordRoutes);
@@ -35,13 +43,11 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/interq", interqChart);
 
-
 app.use((err, req, res, next) => {
   console.error("ERROR:", err);
 
   const statusCode =
-    err.statusCode ||
-    (err.message?.includes("Only PDF") ? 400 : 500);
+    err.statusCode || (err.message?.includes("Only PDF") ? 400 : 500);
 
   res.status(statusCode).json({
     success: false,
@@ -51,7 +57,9 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
-  console.log(`http://localhost:${PORT}`);
+  console.log(
+    `Primary URL: ${process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`}`
+  );
 });
