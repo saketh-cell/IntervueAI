@@ -26,7 +26,7 @@ app.use(cookieParser());
 // Connect DB
 connectDB();
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.get("/", (req, res) => {
   res.json({ success: true, message: "IntervueAI backend is running" });
