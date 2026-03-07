@@ -1,20 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { resetPassword } from "@/src/services/password.service";
 import "@/src/styles/login.css";
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const router = useRouter();
   const params = useSearchParams();
 
-  // ✅ derive directly from URL
   const email = params.get("email") || "";
 
   const [newPassword, setNewPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
-  const [status, setStatus] = useState({ loading: false, msg: "", error: "" });
+  const [status, setStatus] = useState({
+    loading: false,
+    msg: "",
+    error: "",
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +25,7 @@ export default function ResetPasswordPage() {
 
     try {
       const res = await resetPassword(email, newPassword);
+
       setStatus({
         loading: false,
         msg: res.message || "Password updated",
@@ -96,5 +100,13 @@ export default function ResetPasswordPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<div className="login-wrapper">Loading...</div>}>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }
