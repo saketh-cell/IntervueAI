@@ -47,7 +47,7 @@ export default function RegisterPage() {
 
     try {
       await register(formData);
-      router.push("/dashboard"); // or "/login" if register does not auto-login
+      router.push("/dashboard");
     } catch (err) {
       console.error("Register page error:", err);
       setError(
@@ -67,7 +67,6 @@ export default function RegisterPage() {
             Create your account and start your interview preparation journey
             with us. Access a wide range of coding problems, mock interviews,
             and personalized feedback to ace your next tech interview.
-            Join now and take the first step towards your dream job!
           </p>
         </div>
       </div>

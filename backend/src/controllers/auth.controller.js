@@ -21,7 +21,6 @@ const register = async (req, res, next) => {
 
     const result = await registerUser(name, email, password);
 
-   
     res.cookie("token", result.token, cookieOptions);
 
     return res.status(201).json({
@@ -48,7 +47,6 @@ const login = async (req, res, next) => {
 
     const result = await loginUser(email, password);
 
-  
     res.cookie("token", result.token, cookieOptions);
 
     return res.status(200).json({

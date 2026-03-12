@@ -21,7 +21,6 @@ API_URL.interceptors.response.use(
         "/reset-password",
       ];
 
-      
       if (!authPages.includes(path)) {
         window.location.href = "/login";
       }

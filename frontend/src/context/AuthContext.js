@@ -1,7 +1,12 @@
 "use client";
 
 import { createContext, useEffect, useRef, useState } from "react";
-import { loginUser, registerUser, logoutUser, getProfile } from "@/src/services/auth.service";
+import {
+  loginUser,
+  registerUser,
+  logoutUser,
+  getProfile,
+} from "@/src/services/auth.service";
 
 export const AuthContext = createContext();
 
@@ -9,7 +14,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  
   const didInit = useRef(false);
 
   useEffect(() => {
@@ -21,7 +25,6 @@ export const AuthProvider = ({ children }) => {
     const init = async () => {
       try {
         const res = await getProfile();
-
         if (!alive) return;
         setUser(res.user);
       } catch (e) {

@@ -11,16 +11,16 @@ export default function LoginPage() {
   const { login } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [showPass, setShowPass] = useState(false);
 
-  
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 4000);
+    }, 1200);
 
     return () => clearTimeout(timer);
   }, []);
@@ -36,12 +36,18 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSubmitting(true);
 
     try {
       await login(formData);
       router.push("/dashboard");
     } catch (err) {
-      setError("Invalid email or password");
+      console.error("Login page error:", err);
+      setError(
+        err?.response?.data?.message || err?.message || "Invalid email or password"
+      );
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -51,10 +57,8 @@ export default function LoginPage() {
         <div className="brand-content">
           <h1 className="brand-title">Intervue.AI</h1>
           <p className="brand-text">
-            This is a Place Where you can check your knowledge and improve your
-            Interview Skills. We provide you with a Resume Analyzer, Mock
-            Interview and many other features to help you prepare for your next
-            interview. We are here to help you succeed in your career.
+            This is a place where you can check your knowledge and improve your
+            interview skills.
           </p>
         </div>
       </div>
@@ -76,6 +80,7 @@ export default function LoginPage() {
                 name="email"
                 className="login-input"
                 placeholder="Enter your email"
+                value={formData.email}
                 onChange={handleChange}
                 required
               />
@@ -90,6 +95,7 @@ export default function LoginPage() {
                   name="password"
                   className="login-input"
                   placeholder="Enter your password"
+                  value={formData.password}
                   onChange={handleChange}
                   required
                 />
@@ -122,8 +128,8 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <button type="submit" className="login-button">
-              Login
+            <button type="submit" className="login-button" disabled={submitting}>
+              {submitting ? "Logging in..." : "Login"}
             </button>
           </form>
 

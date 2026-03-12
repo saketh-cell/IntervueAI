@@ -14,12 +14,24 @@ const passwordRoutes = require("./routes/password.route");
 
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://intervue-ai-gold.vercel.app",
+];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS not allowed for origin: ${origin}`));
+      }
+    },
     credentials: true,
   })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 
