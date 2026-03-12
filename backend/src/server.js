@@ -1,9 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const connectDB = require("./config/db");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
+
+const connectDB = require("./config/db");
 
 const authRoutes = require("./routes/auth.route");
 const interviewRoutes = require("./routes/interview.route");
@@ -16,7 +17,7 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://intervue-ai-gold.vercel.app",
+  "https://intervue-ai-hazel.vercel.app",
 ];
 
 app.use(
@@ -34,9 +35,6 @@ app.use(
 
 app.use(express.json());
 app.use(cookieParser());
-
-// Connect DB
-connectDB();
 
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
@@ -69,9 +67,20 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(
-    `Primary URL: ${process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`}`
-  );
-});
+const startServer = async () => {
+  try {
+    await connectDB();
+
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on port ${PORT}`);
+      console.log(
+        `Primary URL: ${process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`}`
+      );
+    });
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  }
+};
+
+startServer();

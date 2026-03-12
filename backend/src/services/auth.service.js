@@ -21,11 +21,15 @@ const registerUser = async (name, email, password) => {
   const loginUrl = `${process.env.CLIENT_URL}/login`;
   const forgotUrl = `${process.env.CLIENT_URL}/forgot-password`;
 
-  await sendEmail({
-    to: user.email,
-    subject: "Welcome to InterviewIQ",
-    html: welcomeEmail(user.name, loginUrl, forgotUrl),
-  });
+  try {
+    await sendEmail({
+      to: user.email,
+      subject: "Welcome to InterviewIQ",
+      html: welcomeEmail(user.name, loginUrl, forgotUrl),
+    });
+  } catch (emailError) {
+    console.error("Welcome email failed:", emailError.message);
+  }
 
   const token = generateToken(user._id);
 
