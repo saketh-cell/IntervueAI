@@ -8,9 +8,14 @@ const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-const hashOtp = (otp) => crypto.createHash("sha256").update(otp).digest("hex");
+const hashOtp = (otp) =>
+  crypto.createHash("sha256").update(otp).digest("hex");
 
 const forgotPassword = async (email) => {
+  if (!email) {
+    throw new Error("Email is required");
+  }
+
   const user = await User.findOne({ email });
 
   if (!user) {
@@ -21,6 +26,7 @@ const forgotPassword = async (email) => {
 
   user.resetOtpHash = hashOtp(otp);
   user.resetOtpExpire = Date.now() + 10 * 60 * 1000;
+  user.resetOtpVerified = false;
 
   await user.save();
 
@@ -34,6 +40,10 @@ const forgotPassword = async (email) => {
 };
 
 const verifyOtp = async (email, otp) => {
+  if (!email || !otp) {
+    throw new Error("Email and OTP are required");
+  }
+
   const user = await User.findOne({ email });
 
   if (!user) throw new Error("Invalid OTP");
@@ -42,19 +52,30 @@ const verifyOtp = async (email, otp) => {
 
   if (hashed !== user.resetOtpHash) throw new Error("Invalid OTP");
 
-  if (Date.now() > user.resetOtpExpire) throw new Error("OTP expired");
+  if (!user.resetOtpExpire || Date.now() > user.resetOtpExpire) {
+    throw new Error("OTP expired");
+  }
 
   user.resetOtpVerified = true;
-
   await user.save();
 
   return { message: "OTP verified" };
 };
 
 const resetPassword = async (email, newPassword) => {
+  if (!email || !newPassword) {
+    throw new Error("Email and new password are required");
+  }
+
   const user = await User.findOne({ email });
 
-  if (!user.resetOtpVerified) throw new Error("OTP verification required");
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  if (!user.resetOtpVerified) {
+    throw new Error("OTP verification required");
+  }
 
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(newPassword, salt);
