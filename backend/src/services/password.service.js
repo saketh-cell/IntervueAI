@@ -35,16 +35,20 @@ const forgotPassword = async (email) => {
   await user.save();
   console.log("OTP saved to DB");
 
+  const html = otpEmail(otp);
+  console.log("OTP email template created");
+
   await sendEmail({
     to: user.email,
     subject: "Password Reset OTP",
-    html: otpEmail(otp),
+    html,
   });
 
   console.log("sendEmail finished");
 
   return { message: "OTP sent to email" };
 };
+
 const verifyOtp = async (email, otp) => {
   if (!email || !otp) {
     throw new Error("Email and OTP are required");
