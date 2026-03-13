@@ -18,6 +18,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:3000",
   "https://intervue-ai-hazel.vercel.app",
+  "https://intervue-ai-gold.vercel.app",
 ];
 
 app.use(
