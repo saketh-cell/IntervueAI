@@ -44,13 +44,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+app.use((req, res, next) => {
+  console.log("Method:", req.method, "URL:", req.originalUrl, "Origin:", req.headers.origin);
+  next();
+});
+
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.get("/", (req, res) => {
-  res.json({
-    success: true,
-    message: "IntervueAI backend is running",
-  });
+  res.json({ success: true, message: "IntervueAI backend is running" });
 });
 
 app.get("/ping", (req, res) => {
@@ -91,9 +93,7 @@ const startServer = async () => {
 
     app.listen(PORT, "0.0.0.0", () => {
       console.log(
-        `Primary URL: ${
-          process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`
-        }`
+        `Primary URL: ${process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`}`
       );
     });
   } catch (error) {
