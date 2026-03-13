@@ -17,28 +17,12 @@ const passwordRoutes = require("./routes/password.route");
 
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://intervue-ai-hazel.vercel.app",
-  "https://intervue-ai-gold.vercel.app",
-];
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    console.log("CORS Origin:", origin);
-
-    if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-
-    return callback(null, false);
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
-
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -66,20 +50,9 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/interq", interqChart);
 
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: `Route not found: ${req.method} ${req.originalUrl}`,
-  });
-});
-
 app.use((err, req, res, next) => {
   console.error("ERROR:", err);
-
-  const statusCode =
-    err.statusCode || (err.message?.includes("Only PDF") ? 400 : 500);
-
-  res.status(statusCode).json({
+  res.status(err.statusCode || 500).json({
     success: false,
     message: err.message || "Internal Server Error",
   });
@@ -90,7 +63,6 @@ const PORT = process.env.PORT || 5000;
 const startServer = async () => {
   try {
     await connectDB();
-
     app.listen(PORT, "0.0.0.0", () => {
       console.log(
         `Primary URL: ${process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`}`
