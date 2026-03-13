@@ -15,6 +15,9 @@ const sendEmail = async ({ to, subject, html }) => {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
+      connectionTimeout: 20000,
+      greetingTimeout: 20000,
+      socketTimeout: 30000,
     });
 
     await transporter.verify();
@@ -30,7 +33,10 @@ const sendEmail = async ({ to, subject, html }) => {
     console.log("Email sent:", info.response);
     return info;
   } catch (error) {
-    console.error("Email error:", error);
+    console.error("Email error full object:", error);
+    console.error("Email error message:", error.message);
+    console.error("Email error code:", error.code);
+    console.error("Email error command:", error.command);
     throw error;
   }
 };
