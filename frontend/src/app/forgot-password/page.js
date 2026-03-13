@@ -3,12 +3,16 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { sendResetOtp } from "@/src/services/password.service";
-import "@/src/styles/login.css"; // reuse same styles
+import "@/src/styles/login.css";
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState({ loading: false, msg: "", error: "" });
+  const [status, setStatus] = useState({
+    loading: false,
+    msg: "",
+    error: "",
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,17 +20,24 @@ export default function ForgotPasswordPage() {
 
     try {
       const res = await sendResetOtp(email);
-      
-      setStatus({ loading: false, msg: res.message || "OTP sent", error: "" });
 
-      
+      setStatus({
+        loading: false,
+        msg: res?.message || res?.data?.message || "OTP sent",
+        error: "",
+      });
+
       router.push(`/verify-otp?email=${encodeURIComponent(email)}`);
     } catch (err) {
-      console.log("OTP error", err);
+      console.log("OTP error:", err);
+
       setStatus({
         loading: false,
         msg: "",
-        error: err?.response?.data?.message || "Failed to send OTP",
+        error:
+          err?.response?.data?.message ||
+          err?.message ||
+          "Failed to send OTP",
       });
     }
   };
@@ -54,16 +65,17 @@ export default function ForgotPasswordPage() {
               />
             </div>
 
-            <button className="login-button" disabled={status.loading}>
+            <button
+              type="submit"
+              className="login-button"
+              disabled={status.loading}
+            >
               {status.loading ? "Sending..." : "Send OTP"}
             </button>
           </form>
 
           <div className="login-footer">
-            Back to{" "}
-            <span onClick={() => router.push("/login")}>
-              Login
-            </span>
+            Back to <span onClick={() => router.push("/login")}>Login</span>
           </div>
         </div>
       </div>
