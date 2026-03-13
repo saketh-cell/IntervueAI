@@ -12,23 +12,28 @@ const hashOtp = (otp) =>
   crypto.createHash("sha256").update(otp).digest("hex");
 
 const forgotPassword = async (email) => {
+  console.log("Service forgotPassword email:", email);
+
   if (!email) {
     throw new Error("Email is required");
   }
 
   const user = await User.findOne({ email });
+  console.log("User found:", !!user);
 
   if (!user) {
     return { message: "If email exists OTP sent" };
   }
 
   const otp = generateOTP();
+  console.log("Generated OTP");
 
   user.resetOtpHash = hashOtp(otp);
   user.resetOtpExpire = Date.now() + 10 * 60 * 1000;
   user.resetOtpVerified = false;
 
   await user.save();
+  console.log("OTP saved to DB");
 
   await sendEmail({
     to: user.email,
@@ -36,9 +41,10 @@ const forgotPassword = async (email) => {
     html: otpEmail(otp),
   });
 
+  console.log("sendEmail finished");
+
   return { message: "OTP sent to email" };
 };
-
 const verifyOtp = async (email, otp) => {
   if (!email || !otp) {
     throw new Error("Email and OTP are required");

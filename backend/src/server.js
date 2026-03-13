@@ -74,7 +74,7 @@ const startServer = async () => {
     await connectDB();
 
     app.listen(PORT, "0.0.0.0", () => {
-      console.log(`Server running on port ${PORT}`);
+      
       console.log(
         `Primary URL: ${process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`}`
       );
