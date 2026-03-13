@@ -1,9 +1,10 @@
 require("dns").setDefaultResultOrder("ipv4first");
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const cookieParser = require("cookie-parser");
-require("dotenv").config();
 
 const connectDB = require("./config/db");
 
@@ -38,15 +39,18 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.get("/", (req, res) => {
-  res.json({ success: true, message: "IntervueAI backend is running" });
+  res.json({
+    success: true,
+    message: "IntervueAI backend is running",
+  });
 });
 
 app.get("/ping", (req, res) => {
@@ -59,6 +63,13 @@ app.use("/api/interview", interviewRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/interq", interqChart);
+
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: `Route not found: ${req.method} ${req.originalUrl}`,
+  });
+});
 
 app.use((err, req, res, next) => {
   console.error("ERROR:", err);
@@ -80,7 +91,9 @@ const startServer = async () => {
 
     app.listen(PORT, "0.0.0.0", () => {
       console.log(
-        `Primary URL: ${process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`}`
+        `Primary URL: ${
+          process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`
+        }`
       );
     });
   } catch (error) {
