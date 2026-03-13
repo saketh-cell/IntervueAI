@@ -13,14 +13,17 @@ const sendEmail = async ({ to, subject, html }) => {
       },
     });
 
+    await transporter.verify();
+    console.log("SMTP connection ready");
+
     const info = await transporter.sendMail({
-      from: `"InterviewIQ " <${process.env.EMAIL_USER}>`,
+      from: `"IntervueAI" <${process.env.EMAIL_USER}>`,
       to,
       subject,
       html,
     });
 
-    console.log("Email sent successfully:", info.response);
+    console.log("Email sent:", info.response);
   } catch (error) {
     console.error("Email error:", error);
   }
