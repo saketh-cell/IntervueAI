@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const dns = require("dns");
 
 const sendEmail = async ({ to, subject, html }) => {
   try {
@@ -10,14 +11,19 @@ const sendEmail = async ({ to, subject, html }) => {
       host: "smtp.gmail.com",
       port: 587,
       secure: false,
-      family: 4,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
+      tls: {
+        rejectUnauthorized: true,
+      },
       connectionTimeout: 20000,
       greetingTimeout: 20000,
       socketTimeout: 30000,
+      dnsLookup: (hostname, options, callback) => {
+        return dns.lookup(hostname, { family: 4, all: false }, callback);
+      },
     });
 
     await transporter.verify();
