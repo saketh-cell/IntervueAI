@@ -219,7 +219,7 @@ function DashboardInner() {
                   <div className="dashBtnRow" style={{ alignItems: "center" }}>
                     <div className="dashScorePill">
                       {typeof it?.score === "number"
-                        ? `${Number(it.score).toFixed(1)}/10`
+                        ? `${Number(it.score).toFixed(1)}/100`
                         : "-"}
                     </div>
                   </div>
