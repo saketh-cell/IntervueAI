@@ -1,4 +1,7 @@
 const Resume = require("../models/resume.model");
+const User = require("../models/user.model");
+const sendEmail = require("../utils/sendEmail");
+const { resumeAnalysisEmail } = require("../utils/emailTemplates");
 
 const createResume = async ({
   userId,
@@ -10,8 +13,8 @@ const createResume = async ({
   extractedText,
   analysis,
 }) => {
-  return Resume.create({
-    user: userId, 
+  const resume = await Resume.create({
+    user: userId,
     originalName,
     storedName,
     fileUrl,
@@ -20,6 +23,30 @@ const createResume = async ({
     extractedText: extractedText || "",
     analysis: analysis || undefined,
   });
+
+  // Send ATS/result email if analysis exists
+  if (analysis) {
+    try {
+      const user = await User.findById(userId).select("name email");
+
+      if (user?.email) {
+        await sendEmail({
+          to: user.email,
+          subject: "Your IntervueAI Resume Analysis",
+          html: resumeAnalysisEmail(user.name, {
+            atsScore: analysis.atsScore || 0,
+            topSuggestion:
+              analysis.topSuggestion ||
+              "Improve keywords, project impact, and formatting for better ATS performance.",
+          }),
+        });
+      }
+    } catch (emailError) {
+      console.error("Resume analysis email failed:", emailError.message);
+    }
+  }
+
+  return resume;
 };
 
 const getMyResumes = async (userId) => {
@@ -28,11 +55,13 @@ const getMyResumes = async (userId) => {
 
 const deleteResume = async (userId, resumeId) => {
   const resume = await Resume.findOne({ _id: resumeId, user: userId });
+
   if (!resume) {
     const err = new Error("Resume Not Found");
     err.statusCode = 404;
     throw err;
   }
+
   await resume.deleteOne();
   return resume;
 };

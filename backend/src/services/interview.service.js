@@ -1,6 +1,12 @@
 const InterviewSession = require("../models/interviewSession.model");
+const User = require("../models/user.model");
 const { generateInterviewQuestions } = require("../ai/questionGenerator");
 const { evaluateAnswer } = require("../ai/answerEvaluator");
+const sendEmail = require("../utils/sendEmail");
+const {
+  interviewResultEmail,
+  analysisEmail,
+} = require("../utils/emailTemplates");
 
 // Create a new interview session
 const createInterviewSession = async (userId, role, level) => {
@@ -44,7 +50,10 @@ const submitAnswerSession = async (interviewId, questionIndex, userAnswer) => {
 
 // Complete interview session
 const completeInterviewSession = async (interviewId) => {
-  const interview = await InterviewSession.findById(interviewId);
+  const interview = await InterviewSession.findById(interviewId).populate(
+    "user",
+    "name email"
+  );
 
   if (!interview) {
     throw new Error("Interview session not found");
@@ -63,6 +72,38 @@ const completeInterviewSession = async (interviewId) => {
   interview.status = "completed";
 
   await interview.save();
+
+  // Optional category-style breakdown for analysis email
+  // Right now using same average score as placeholder.
+  const scores = {
+    technical: Number(averageScore.toFixed(1)),
+    communication: Number(averageScore.toFixed(1)),
+    problem: Number(averageScore.toFixed(1)),
+    confidence: Number(averageScore.toFixed(1)),
+  };
+
+  // Send emails only if user email exists
+  if (interview.user?.email) {
+    try {
+      await sendEmail({
+        to: interview.user.email,
+        subject: "Your IntervueAI Interview Results 🎯",
+        html: interviewResultEmail(
+          interview.user.name,
+          interview.role,
+          interview.score
+        ),
+      });
+
+      await sendEmail({
+        to: interview.user.email,
+        subject: "Your IntervueAI AI Interview Analysis 📊",
+        html: analysisEmail(interview.user.name, interview.role, scores),
+      });
+    } catch (emailError) {
+      console.error("Interview result email failed:", emailError.message);
+    }
+  }
 
   return {
     averageScore: interview.score,
