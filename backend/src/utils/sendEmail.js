@@ -1,48 +1,35 @@
-const nodemailer = require("nodemailer");
-const dns = require("dns");
+const { Resend } = require("resend");
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendEmail = async ({ to, subject, html }) => {
   try {
-    console.log("EMAIL_USER:", process.env.EMAIL_USER);
-    console.log("EMAIL_PASS exists:", !!process.env.EMAIL_PASS);
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error("RESEND_API_KEY is missing in environment variables");
+    }
+
+    if (!process.env.EMAIL_FROM) {
+      throw new Error("EMAIL_FROM is missing in environment variables");
+    }
+
+    if (!to || !subject || !html) {
+      throw new Error("Missing required email fields: to, subject, or html");
+    }
+
     console.log("Sending email to:", to);
 
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-      tls: {
-        rejectUnauthorized: true,
-      },
-      connectionTimeout: 20000,
-      greetingTimeout: 20000,
-      socketTimeout: 30000,
-      dnsLookup: (hostname, options, callback) => {
-        return dns.lookup(hostname, { family: 4, all: false }, callback);
-      },
-    });
-
-    await transporter.verify();
-    console.log("SMTP connection ready");
-
-    const info = await transporter.sendMail({
-      from: `"IntervueAI" <${process.env.EMAIL_USER}>`,
+    const response = await resend.emails.send({
+      from: `"IntervueAI" <${process.env.EMAIL_FROM}>`,
       to,
       subject,
       html,
     });
 
-    console.log("Email sent:", info.response);
-    return info;
+    console.log("Email sent successfully:", response);
+
+    return response;
   } catch (error) {
-    console.error("Email error full object:", error);
-    console.error("Email error message:", error.message);
-    console.error("Email error code:", error.code);
-    console.error("Email error command:", error.command);
+    console.error("Resend email error:", error);
     throw error;
   }
 };

@@ -5,11 +5,22 @@ exports.forgotPassword = async (req, res, next) => {
     console.log("forgotPassword req.body:", req.body);
 
     const { email } = req.body;
-    const data = await passwordService.forgotPassword(email);
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required",
+      });
+    }
+
+    const data = await passwordService.forgotPassword(email.trim().toLowerCase());
 
     console.log("forgotPassword service response:", data);
 
-    res.json({ success: true, ...data });
+    return res.status(200).json({
+      success: true,
+      ...data,
+    });
   } catch (err) {
     console.error("forgotPassword controller error:", err);
     next(err);
@@ -21,9 +32,23 @@ exports.verifyOtp = async (req, res, next) => {
     console.log("verifyOtp req.body:", req.body);
 
     const { email, otp } = req.body;
-    const data = await passwordService.verifyOtp(email, otp);
 
-    res.json({ success: true, ...data });
+    if (!email || !otp) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and OTP are required",
+      });
+    }
+
+    const data = await passwordService.verifyOtp(
+      email.trim().toLowerCase(),
+      otp.trim()
+    );
+
+    return res.status(200).json({
+      success: true,
+      ...data,
+    });
   } catch (err) {
     console.error("verifyOtp controller error:", err);
     next(err);
@@ -35,9 +60,23 @@ exports.resetPassword = async (req, res, next) => {
     console.log("resetPassword req.body:", req.body);
 
     const { email, newPassword } = req.body;
-    const data = await passwordService.resetPassword(email, newPassword);
 
-    res.json({ success: true, ...data });
+    if (!email || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and new password are required",
+      });
+    }
+
+    const data = await passwordService.resetPassword(
+      email.trim().toLowerCase(),
+      newPassword
+    );
+
+    return res.status(200).json({
+      success: true,
+      ...data,
+    });
   } catch (err) {
     console.error("resetPassword controller error:", err);
     next(err);

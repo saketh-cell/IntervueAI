@@ -22,7 +22,7 @@ const forgotPassword = async (email) => {
   console.log("User found:", !!user);
 
   if (!user) {
-    return { message: "If email exists OTP sent" };
+    return { message: "If the email exists, an OTP has been sent." };
   }
 
   const otp = generateOTP();
@@ -35,12 +35,12 @@ const forgotPassword = async (email) => {
   await user.save();
   console.log("OTP saved to DB");
 
-  const html = otpEmail(otp);
+  const html = otpEmail(user.name, otp);
   console.log("OTP email template created");
 
   await sendEmail({
     to: user.email,
-    subject: "Password Reset OTP",
+    subject: "Your IntervueAI Password Reset OTP",
     html,
   });
 
@@ -56,11 +56,15 @@ const verifyOtp = async (email, otp) => {
 
   const user = await User.findOne({ email });
 
-  if (!user) throw new Error("Invalid OTP");
+  if (!user) {
+    throw new Error("Invalid OTP");
+  }
 
   const hashed = hashOtp(otp);
 
-  if (hashed !== user.resetOtpHash) throw new Error("Invalid OTP");
+  if (hashed !== user.resetOtpHash) {
+    throw new Error("Invalid OTP");
+  }
 
   if (!user.resetOtpExpire || Date.now() > user.resetOtpExpire) {
     throw new Error("OTP expired");
@@ -69,7 +73,7 @@ const verifyOtp = async (email, otp) => {
   user.resetOtpVerified = true;
   await user.save();
 
-  return { message: "OTP verified" };
+  return { message: "OTP verified successfully" };
 };
 
 const resetPassword = async (email, newPassword) => {
@@ -96,7 +100,7 @@ const resetPassword = async (email, newPassword) => {
 
   await user.save();
 
-  return { message: "Password updated" };
+  return { message: "Password updated successfully" };
 };
 
 module.exports = {
