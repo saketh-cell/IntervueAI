@@ -112,7 +112,7 @@ function DashboardInner() {
             className="dashNavItem dashNavWithBadge"
             href="/dashboard/topInterviewQuestions"
           >
-            <span>Top Questions</span>
+            <span className="dashTopQuestions">Top Questions</span>
             <span className="dashNewTopBadge">NEW</span>
           </Link>
         </div>
