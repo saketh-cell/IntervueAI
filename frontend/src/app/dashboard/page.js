@@ -109,10 +109,11 @@ function DashboardInner() {
             Analyze Resume
           </Link>
           <Link
-            className="dashBtnGhost"
+            className="dashNavItem dashNavWithBadge"
             href="/dashboard/topInterviewQuestions"
           >
-            Top Questions
+            <span>Top Questions</span>
+            <span className="dashNewTopBadge">NEW</span>
           </Link>
         </div>
       </div>
