@@ -540,15 +540,27 @@
   }
 }
 
+/* keep nav layout unchanged */
 .dashNavWithBadge {
   position: relative;
-  overflow: visible;
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.10);
 }
 
-.dashNavWithBadge:hover {
-  background: rgba(255, 255, 255, 0.24);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.14);
+/* premium small badge */
+.dashNewTopBadge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  padding: 3px 6px;
+  border-radius: 999px;
+
+  background: #2563eb;
+  color: #fff;
+
+  line-height: 1;
+
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.35);
 }

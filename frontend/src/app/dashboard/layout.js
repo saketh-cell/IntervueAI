@@ -17,29 +17,45 @@ export default function DashboardLayout({ children }) {
         {/* Top Content Wrapper */}
         <div className="dashSidebarTop">
           <div className="dashBrand">
-            <div className="dashLogo"><img src="/logo.png" alt="IntervueAI logo"/></div>
+            <div className="dashLogo">
+              <img src="/logo.png" alt="IntervueAI logo" />
+            </div>
             <div>
               <div className="dashBrandTitle">IntervueAI</div>
-              <div className="dashBrandSub">
-                Practice • Improve • Win
-              </div>
+              <div className="dashBrandSub">Practice • Improve • Win</div>
             </div>
           </div>
 
           <nav className="dashNav">
-            <a className="dashNavItem" href="/dashboard">Dashboard</a>
-            <a className="dashNavItem" href="/dashboard/interview">Interview</a>
-            <a className="dashNavItem" href="/dashboard/topInterviewQuestions">Top Questions</a>
-            <a className="dashNavItem" href="/dashboard/resume">Resume</a>
-            <a className="dashNavItem" href="/dashboard/results">Results</a>
+            <a className="dashNavItem" href="/dashboard">
+              Dashboard
+            </a>
+
+            <a className="dashNavItem" href="/dashboard/interview">
+              Interview
+            </a>
+
+            <a
+              className="dashNavItem dashNavWithBadge"
+              href="/dashboard/topInterviewQuestions"
+            >
+              Top Questions
+              <span className="dashNewTopBadge">NEW</span>
+            </a>
+
+            <a className="dashNavItem" href="/dashboard/resume">
+              Resume
+            </a>
+
+            <a className="dashNavItem" href="/dashboard/results">
+              Results
+            </a>
           </nav>
         </div>
 
         {/* Bottom Section */}
         <div className="dashSidebarBottom">
-          <div className="dashTip">
-            Tip: Do mock Interview Daily 📝
-          </div>
+          <div className="dashTip">Tip: Do mock Interview Daily 📝</div>
 
           <button className="dashLogoutBtn" onClick={handleLogout}>
             Logout
