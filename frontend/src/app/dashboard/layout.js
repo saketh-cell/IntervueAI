@@ -30,11 +30,6 @@ export default function DashboardLayout({ children }) {
             <a className="dashNavItem" href="/dashboard">
               Dashboard
             </a>
-
-            <a className="dashNavItem" href="/dashboard/interview">
-              Interview
-            </a>
-
             <a
               className="dashNavItem dashNavWithBadge"
               href="/dashboard/topInterviewQuestions"
@@ -42,6 +37,11 @@ export default function DashboardLayout({ children }) {
               Top Questions
               <span className="dashNewTopBadge">NEW</span>
             </a>
+
+            <a className="dashNavItem" href="/dashboard/interview">
+              Interview
+            </a>
+
 
             <a className="dashNavItem" href="/dashboard/resume">
               Resume
