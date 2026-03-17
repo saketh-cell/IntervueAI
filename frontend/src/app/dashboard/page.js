@@ -56,7 +56,7 @@ function DashboardInner() {
 
   const recent = useMemo(
     () => (Array.isArray(data?.recent) ? data.recent : []),
-    [data]
+    [data],
   );
 
   const latestInterviewId = recent?.[0]?._id || null;
@@ -108,6 +108,12 @@ function DashboardInner() {
           <Link className="dashBtnGhost" href="/dashboard/resume">
             Analyze Resume
           </Link>
+          <Link
+            className="dashBtnGhost"
+            href="/dashboard/topInterviewQuestions"
+          >
+            Top Questions
+          </Link>
         </div>
       </div>
 
@@ -136,7 +142,9 @@ function DashboardInner() {
         />
         <StatCard
           title="Last Interview"
-          value={stats.lastInterviewDate ? fmtDate(stats.lastInterviewDate) : "-"}
+          value={
+            stats.lastInterviewDate ? fmtDate(stats.lastInterviewDate) : "-"
+          }
           sub="Most recent attempt"
         />
       </div>
@@ -160,6 +168,12 @@ function DashboardInner() {
               desc="Practice with an AI interviewer and get instant feedback"
               href="/dashboard/interview"
               tag="Interview"
+            />
+            <ActionCard
+              title="Top Interview Questions"
+              desc="Generate the most asked interview questions based on role and experience"
+              href="/top-interview-questions"
+              tag="Questions"
             />
 
             {latestInterviewId ? (

@@ -14,6 +14,7 @@ const dashboardRoutes = require("./routes/dashboard.route");
 const resumeRoutes = require("./routes/resume.route");
 const interqChart = require("./routes/interqChat.route");
 const passwordRoutes = require("./routes/password.route");
+const topInterviewQuestions = require("./routes/topInterviewQuenstions.route")
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use("/api/interview", interviewRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/interq", interqChart);
+app.use("/api/top-interview-questions", topInterviewQuestions);
 
 app.use((err, req, res, next) => {
   console.error("ERROR:", err);

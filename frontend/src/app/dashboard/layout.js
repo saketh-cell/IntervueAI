@@ -29,6 +29,7 @@ export default function DashboardLayout({ children }) {
           <nav className="dashNav">
             <a className="dashNavItem" href="/dashboard">Dashboard</a>
             <a className="dashNavItem" href="/dashboard/interview">Interview</a>
+            <a className="dashNavItem" href="/dashnoard/topInterviewQuestions">Top Questions</a>
             <a className="dashNavItem" href="/dashboard/resume">Resume</a>
             <a className="dashNavItem" href="/dashboard/results">Results</a>
           </nav>
